@@ -1,1 +1,1 @@
-# Daily-Journal---Notes-App
+# Daily-Journal-&-Notes-App
