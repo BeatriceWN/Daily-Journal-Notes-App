@@ -1,6 +1,3 @@
-// Set base API URL (update this if using a remote backend)
-const API_URL = 'http://localhost:3000/notes';
-
 // DOM element references
 const notesContainer = document.getElementById('notesContainer');
 const searchInput = document.getElementById('searchInput');
@@ -17,17 +14,11 @@ let recentlyDeletedNote = null;
 
 // Initialize Quill rich text editor
 const quill = new Quill('#quillEditor', {
+  placeholder: 'Type your note...',
   theme: 'snow',
   modules: {
     toolbar: '#toolbar'
-  },
-  formats: [
-    'header',  // this supports all <h1> to <h6> as per the toolbar
-    'bold',
-    'italic',
-    'underline',
-    'list',
-  ]
+  }
 });
 
 // Display toast messages (light/dark mode aware)
@@ -89,7 +80,7 @@ function loadFromLocal() {
 // Fetch notes from server or fallback to localStorage
 async function fetchNotes() {
   try {
-    const res = await fetch(API_URL);
+    const res = await fetch('/notes');
     if (!res.ok) throw new Error();
     allNotes = await res.json();
     saveToLocal(allNotes);
@@ -131,6 +122,9 @@ function renderNotes() {
 noteForm.addEventListener('submit', async (e) => {
   e.preventDefault();
 
+  const isEdit = !!noteForm.dataset.editingId;
+  const editingId = noteForm.dataset.editingId;
+
   const note = {
     title: noteTitle.value,
     body: quill.root.innerHTML,
@@ -139,38 +133,58 @@ noteForm.addEventListener('submit', async (e) => {
   };
 
   try {
-    if (noteForm.dataset.editingId) {
-      await fetch(`${API_URL}/${noteForm.dataset.editingId}`, {
+    if (isEdit) {
+      // PATCH the note
+      const res = await fetch(`/notes/${editingId}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(note)
       });
+      if (!res.ok) throw new Error('Failed to update note on server');
+
+      // Optional: update local array manually to reflect change immediately
+      allNotes = allNotes.map(n => n.id.toString() === editingId ? { ...n, ...note } : n);
+      saveToLocal(allNotes);
+
       showToast('Note updated');
-      noteForm.dataset.editingId = '';
     } else {
-      await fetch(API_URL, {
+      // POST new note
+      const res = await fetch('/notes', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(note)
       });
+      if (!res.ok) throw new Error('Failed to save note');
+
       showToast('Note saved');
     }
+
+    // Clear form + editor
     noteForm.reset();
     quill.setContents([]);
+    noteForm.dataset.editingId = '';
+
+    // Refresh notes list
     fetchNotes();
   } catch {
-    showToast('Saving failed. Using offline storage.');
-    if (noteForm.dataset.editingId) {
-      allNotes = allNotes.map(n => n.id === noteForm.dataset.editingId ? { ...n, ...note } : n);
-      noteForm.dataset.editingId = '';
+    // Offline fallback
+    showToast(isEdit ? 'Update failed. Saving offline.' : 'Saving failed. Using offline storage.');
+    
+    if (isEdit) {
+      allNotes = allNotes.map(n => n.id.toString() === editingId ? { ...n, ...note } : n);
     } else {
       note.id = crypto.randomUUID();
       allNotes.push(note);
     }
+
     saveToLocal(allNotes);
     renderNotes();
+    noteForm.dataset.editingId = '';
+    quill.setContents([]);
+    noteForm.reset();
   }
 });
+
 
 // Populate form fields for editing a note
 window.editNote = function (id) {
@@ -191,7 +205,7 @@ window.deleteNote = function (id) {
 
   const confirmAndDelete = async () => {
     try {
-      await fetch(`${API_URL}/${id}`, { method: 'DELETE' });
+      await fetch(`/notes/${id}`, { method: 'DELETE' });
       showToast('Note deleted');
       fetchNotes();
     } catch {
@@ -210,7 +224,7 @@ window.deleteNote = function (id) {
     undo.onclick = async () => {
       if (!recentlyDeletedNote) return;
       try {
-        await fetch(API_URL, {
+        await fetch('/notes', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(recentlyDeletedNote)
