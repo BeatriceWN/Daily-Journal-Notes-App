@@ -1,0 +1,67 @@
+{
+  "notes": [
+    {
+      "id": "3",
+      "title": "Group Project Kickoff",
+      "body": "<p>We brainstormed ideas for our final project and agreed on a <strong>Notes App</strong>.</p>",
+      "date": "2025-07-12",
+      "important": true
+    },
+    {
+      "id": "4",
+      "title": "Grocery Shopping List",
+      "body": "<ul><li>Milk</li><li>Bread</li><li>Eggs</li><li>Tomatoes</li></ul>",
+      "date": "2025-07-13",
+      "important": false
+    },
+    {
+      "id": "5",
+      "title": "Weekend Plans",
+      "body": "<p>Visit the farmers' market and try that new coffee place downtown ☕️</p>",
+      "date": "2025-07-13",
+      "important": false
+    },
+    {
+      "id": "6",
+      "title": "Book Summary: Atomic Habits",
+      "body": "<p><strong>Key Insight:</strong> Small habits compound over time.<br><em>“You do not rise to the level of your goals, you fall to the level of your systems.”</em></p>",
+      "date": "2025-07-14",
+      "important": true
+    },
+    {
+      "id": "7",
+      "title": "Coding Practice Log",
+      "body": "<p>Solved 3 LeetCode problems:<br>1. Two Sum<br>2. Valid Parentheses<br>3. Merge Intervals</p>",
+      "date": "2025-07-14",
+      "important": true
+    },
+    {
+      "id": "8",
+      "title": "Meeting with Mentor",
+      "body": "<p>Great advice on balancing coding with soft skills. Need to start reading more leadership books.</p>",
+      "date": "2025-07-15",
+      "important": true
+    },
+    {
+      "id": "9",
+      "title": "App Design Inspiration",
+      "body": "<p>Loved the layout on <a href='https://dribbble.com'>Dribbble</a>. Minimalist and clean UI with soft shadows.</p>",
+      "date": "2025-07-15",
+      "important": false
+    },
+    {
+      "id": "10",
+      "title": "Todo for Tomorrow",
+      "body": "<ol><li>Fix Quill editor spacing</li><li>Add dark mode toggle</li><li>Push changes to GitHub</li></ol>",
+      "date": "2025-07-16",
+      "important": true
+    },
+    {
+      "id": "4bb7",
+      "title": "Complete CIV Technical Architecture Document (TAD)",
+      "body": "<p>The integration designs are ready and submitted for review. Meanwhile, work on completing the TAD and append the designs once review and alignmenment process is complete.</p>",
+      "date": "2025-07-15",
+      "important": false
+    }
+  ]
+}
