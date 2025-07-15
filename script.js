@@ -20,7 +20,14 @@ const quill = new Quill('#quillEditor', {
   theme: 'snow',
   modules: {
     toolbar: '#toolbar'
-  }
+  },
+  formats: [
+    'header',  // this supports all <h1> to <h6> as per the toolbar
+    'bold',
+    'italic',
+    'underline',
+    'list',
+  ]
 });
 
 // Display toast messages (light/dark mode aware)

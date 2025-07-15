@@ -1,3 +1,4 @@
+here is my css< update it without altering anything else:
 /* Base reset and styling */
 body {
   font-family: Arial, sans-serif;
@@ -41,7 +42,7 @@ main {
 
 /* Notes section styling */
 .note {
-  background-color: #fff;
+  background-color: #f4eff3;
   padding: 1rem;
   margin-bottom: 1rem;
   border-left: 5px solid #06f59d;
@@ -336,4 +337,21 @@ body.dark-mode .modal button {
 
 body.dark-mode .modal button:hover {
   background-color: #8a0cdf;
+}
+
+/* Align 'Mark as Important' to right with label text before checkbox */
+form .important-checkbox-group {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 0.2rem;
+  margin-bottom: 1rem;
+}
+
+form .important-checkbox-group label {
+  margin: 0;
+  font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+  gap: 0.1 rem;
 }
