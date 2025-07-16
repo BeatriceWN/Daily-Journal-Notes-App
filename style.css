@@ -62,7 +62,7 @@ main {
 
 /* Form section */
 form {
-  background-color: #fff;
+  background-color: #f5f0fa;
   padding: 1.5rem;
   border-radius: 8px;
   box-shadow: 0 2px 5px rgba(0,0,0,0.1);
@@ -114,7 +114,7 @@ button {
 }
 
 button:hover {
-  background-color: #069395;
+  background-color: #be68e0;
 }
 
 /* Toolbar spacing */
@@ -374,6 +374,23 @@ body.dark-mode #quillEditor {
   border-color: #555;
 }
 
+body.dark-mode input[type="text"]::placeholder {
+  color: #ccc;
+}
+
+body.dark-mode input[type="text"] {
+  background-color: #2c2c2c;
+  color: #e0e0e0;
+  border: 1px solid #555;
+}
+
+/* Dark mode: Quill Editor area full styling */
+body.dark-mode #quillEditor {
+  background-color: #2c2c2c;
+  color: #e0e0e0;
+  border-color: #555;
+}
+
 /* Adjust Quill editor text color */
 body.dark-mode .ql-editor {
   color: #e0e0e0;
@@ -383,13 +400,6 @@ body.dark-mode .ql-editor {
 body.dark-mode .ql-editor::before {
   color: #aaa;
   font-style: italic;
-}
-
-/* Dark mode: Quill Editor area full styling */
-body.dark-mode #quillEditor {
-  background-color: #2c2c2c;
-  color: #e0e0e0;
-  border-color: #555;
 }
 
 /* Editable content inside Quill */
@@ -423,4 +433,38 @@ body.dark-mode .ql-editor::before {
 }
 #noteTitle::placeholder {
   font-style: italic;
+}
+
+/* Dark mode styles for Quill editor */
+body.dark-mode .ql-editor {
+  background-color: #2c2c2c !important;
+  color: #e0e0e0 !important;
+}
+
+/* Placeholder color in dark mode */
+body.dark-mode .ql-editor::before {
+  color: #aaa !important;
+}
+
+/* Dark mode toolbar text color */
+body.dark-mode .ql-toolbar,
+body.dark-mode .ql-toolbar .ql-picker-label,
+body.dark-mode .ql-toolbar .ql-picker-item {
+  background-color: #2c2c2c !important;
+  color: #e0e0e0 !important;
+  border-color: #444 !important;
+}
+
+/* Optional: darken dropdown hover */
+body.dark-mode .ql-picker-options {
+  background-color: #3a3a3a !important;
+}
+
+/* Ensure uniform width for Title, Date, and Quill editor */
+form input[type="text"],
+form input[type="date"],
+#quillEditor {
+  width: 100%;
+  box-sizing: border-box;
+  background-color: #fff;
 }

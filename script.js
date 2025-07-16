@@ -259,7 +259,8 @@ importantOnly.addEventListener('change', renderNotes);
 
 // Toggle light/dark mode
 toggleDarkMode.addEventListener('click', () => {
-  document.body.classList.toggle('dark-mode');
+  const isDark = document.body.classList.toggle('dark-mode');
+  toggleDarkMode.textContent = isDark ? 'Light Mode' : 'Dark Mode';
 });
 
 // Load notes when page loads
