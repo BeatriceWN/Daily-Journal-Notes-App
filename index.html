@@ -1,85 +1,97 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>daily journal & notes</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>daily journal & notes</title>
 
-  <!-- app main external css -->
-  <link rel="stylesheet" href="style.css" />
+    <!-- app main external css -->
+    <link rel="stylesheet" href="style.css" />
 
-  <!-- quill css and js (local) -->
-  <link rel="stylesheet" href="libs/quill.snow.css" />
-  <script src="libs/quill.min.js" defer></script>
+    <!-- quill css and js (local) -->
+    <link rel="stylesheet" href="libs/quill.snow.css" />
+    <script src="libs/quill.min.js" defer></script>
 
-  <!-- main script -->
-  <script src="script.js" defer></script>
-</head>
+    <!-- main script -->
+    <script src="script.js" defer></script>
+  </head>
 
-<body>
-  <!-- header section -->
-  <header>
-    <h1>Daily Journal & Notes</h1>
+  <body>
+    <!-- header section -->
+    <header>
+      <h1>Daily Journal & Notes</h1>
 
-    <!-- search input -->
-    <input type="text" id="searchInput" placeholder="search notes..." />
+      <!-- header top row: left-aligned search and filter, right-aligned button -->
+     <div class="header-row">
+      <div class="header-left">
+        <!-- search input -->
+        <input type="text" id="searchInput" placeholder="search notes..." />
 
-    <!-- important only filter -->
-    <label>
-      <input type="checkbox" id="importantOnly" />
-      important only
-    </label>
+        <!-- important only filter -->
+        <label>
+        <input type="checkbox" id="importantOnly" />
+        important only
+      </label>
+      
+        <!-- toggle theme -->
+        <button id="toggleDarkMode">toggle dark mode</button>
+      </div>
+    </header>
 
-    <!-- toggle theme -->
-    <button id="toggleDarkMode">toggle dark mode</button>
-  </header>
+    <main>
+      <!-- where notes will render -->
+      <section id="notesContainer"></section>
 
-  <main>
-    <!-- where notes will render -->
-    <section id="notesContainer"></section>
+      <!-- form for adding/editing a note -->
+      <section id="noteFormSection">
+        <h2 id="formTitle">Add a New Note</h2>
 
-    <!-- form for adding/editing a note -->
-    <section id="noteFormSection">
-      <h2 id="formTitle">Add a New Note</h2>
+        <!-- wrap form in a styled container -->
+        <div class="add-note-card">
+          <form id="noteForm">
+            <!-- note title input -->
+            <input
+              type="text"
+              id="noteTitle"
+              placeholder="title"
+              required
+            /><br />
 
-      <form id="noteForm">
-        <!-- note title input -->
-        <input type="text" id="noteTitle" placeholder="title" required /><br />
+            <!-- quill custom toolbar -->
+            <div id="toolbar">
+              <select class="ql-header">
+                <option selected></option>
+                <option value="1">heading 1</option>
+                <option value="2">heading 2</option>
+                <option value="3">heading 3</option>
+                <option value="4">heading 4</option>
+                <option value="5">heading 5</option>
+                <option value="6">heading 6</option>
+              </select>
+              <button class="ql-bold" title="bold"></button>
+              <button class="ql-italic" title="italic"></button>
+              <button class="ql-underline" title="underline"></button>
+              <button class="ql-list" value="ordered" title="ordered list"></button>
+              <button class="ql-list" value="bullet" title="bullet list"></button>
+            </div>
 
-        <!-- quill custom toolbar -->
-        <div id="toolbar">
-          <select class="ql-header">
-            <option selected></option>
-            <option value="1">heading 1</option>
-            <option value="2">heading 2</option>
-            <option value="3">heading 3</option>
-            <option value="4">heading 4</option>
-            <option value="5">heading 5</option>
-            <option value="6">heading 6</option>
-          </select>
-          <button class="ql-bold" title="bold"></button>
-          <button class="ql-italic" title="italic"></button>
-          <button class="ql-underline" title="underline"></button>
-          <button class="ql-list" value="ordered" title="ordered list"></button>
-          <button class="ql-list" value="bullet" title="bullet list"></button>
+            <!-- quill editor -->
+            <div id="quillEditor"></div><br />
+
+            <!-- date input -->
+            <input type="date" id="noteDate" /><br />
+
+            <!-- important flag -->
+            <div id="importantLabel">
+              <span>Mark as Important</span>
+              <input type="checkbox" id="noteImportant" />
+            </div>
+
+            <!-- submit note -->
+            <button type="submit">save note</button>
+          </form>
         </div>
-
-        <!-- quill editor -->
-        <div id="quillEditor"></div><br />
-
-        <!-- date input -->
-        <input type="date" id="noteDate" /><br />
-
-        <!-- important flag -->
-        <div id="importantLabel">
-          <span>Mark as Important</span>
-          <input type="checkbox" id="noteImportant" />
-        </div>
-
-        <!-- submit note -->
-        <button type="submit">save note</button>
-      </form>
-    </section>
-  </main>
-</body>
+      </section>
+    </main>
+  </body>
 </html>
