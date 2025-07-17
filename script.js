@@ -1,6 +1,4 @@
-// =============================
 // DOM ELEMENT REFERENCES
-// =============================
 const notesContainer = document.getElementById('notesContainer');       // Where all notes will be displayed
 const searchInput = document.getElementById('searchInput');             // Search bar input
 const importantOnly = document.getElementById('importantOnly');         // Checkbox to filter only important notes
@@ -10,17 +8,15 @@ const noteDate = document.getElementById('noteDate');                   // Input
 const noteImportant = document.getElementById('noteImportant');         // Checkbox to mark note as important
 const toggleDarkMode = document.getElementById('toggleDarkMode');       // Button to toggle dark mode
 
-// =============================
 // STATE VARIABLES
-// =============================
-const API_BASE = "http://localhost:3000"; // Your local JSON-server endpoint
+const API_BASE = "http://localhost:3000"; // local JSON-server endpoint
 
 let allNotes = [];                       // Array holding all notes fetched from API or local storage
 noteForm.dataset.editingId = '';         // Keeps track of which note is being edited (if any)
 let recentlyDeletedNote = null;          // Temporarily holds recently deleted note for undo feature
 
 // INITIALIZE QUILL EDITOR
-// We mount Quill on the #quillEditor div and bind our custom toolbar
+//mount Quill on the #quillEditor div and bind our custom toolbar
 const quill = new Quill('#quillEditor', {
   theme: 'snow',
   modules: {
@@ -28,10 +24,8 @@ const quill = new Quill('#quillEditor', {
   }
 });
 
-// =============================
 // TOAST MESSAGE HELPER
-// =============================
-// Creates a floating toast message to show feedback to users
+// Creates a floating toast message to show feedback
 function showToast(message) {
   const toast = document.createElement('div');
   toast.className = 'toast show';
@@ -50,9 +44,7 @@ function showToast(message) {
   }, 3000);
 }
 
-// =============================
 // MODAL CONFIRMATION HELPER
-// =============================
 // Displays a confirmation modal before destructive actions like delete
 function showModal(message, onConfirm) {
   const overlay = document.createElement('div');
@@ -80,9 +72,7 @@ function showModal(message, onConfirm) {
   setTimeout(dismiss, 5000);
 }
 
-// =============================
 // LOCAL STORAGE UTILITIES
-// =============================
 // Save notes to localStorage in case of offline access
 function saveToLocal(notes) {
   localStorage.setItem('localNotes', JSON.stringify(notes));
@@ -94,9 +84,7 @@ function loadFromLocal() {
   return saved ? JSON.parse(saved) : [];
 }
 
-// =============================
 // FETCH NOTES FROM API OR FALLBACK
-// =============================
 async function fetchNotes() {
   try {
     const res = await fetch(`${API_BASE}/notes`);
@@ -109,9 +97,7 @@ async function fetchNotes() {
   renderNotes(); // Display on page
 }
 
-// =============================
 // RENDER NOTES ON THE PAGE
-// =============================
 function renderNotes() {
   const query = searchInput.value.toLowerCase();
 
@@ -141,9 +127,7 @@ function renderNotes() {
   });
 }
 
-// =============================
 // FORM SUBMIT HANDLER
-// =============================
 noteForm.addEventListener('submit', async (e) => {
   e.preventDefault();
 
@@ -200,9 +184,7 @@ noteForm.addEventListener('submit', async (e) => {
   }
 });
 
-// =============================
 // EDIT NOTE
-// =============================
 window.editNote = function (id) {
   const note = allNotes.find(n => n.id.toString() === id.toString());
   if (!note) return;
@@ -213,9 +195,7 @@ window.editNote = function (id) {
   noteForm.dataset.editingId = note.id;
 };
 
-// =============================
 // DELETE NOTE + UNDO
-// =============================
 window.deleteNote = function (id) {
   const note = allNotes.find(n => n.id === id || n.id.toString() === id.toString());
   recentlyDeletedNote = note;
@@ -269,21 +249,15 @@ window.deleteNote = function (id) {
   showModal('Delete this note?', confirmAndDelete);
 };
 
-// =============================
 // FILTER EVENTS
-// =============================
 searchInput.addEventListener('input', renderNotes);
 importantOnly.addEventListener('change', renderNotes);
 
-// =============================
 // DARK MODE TOGGLE
-// =============================
 toggleDarkMode.addEventListener('click', () => {
   const isDark = document.body.classList.toggle('dark-mode');
   toggleDarkMode.textContent = isDark ? 'Light Mode' : 'Dark Mode';
 });
 
-// =============================
 // FETCH NOTES ON LOAD
-// =============================
 fetchNotes().then(renderNotes);
