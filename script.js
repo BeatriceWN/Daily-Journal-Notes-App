@@ -1,4 +1,4 @@
-// DOM ELEMENT REFERENCES
+// ===== DOM ELEMENT REFERENCES =====
 const notesContainer = document.getElementById('notesContainer');       // Where all notes will be displayed
 const searchInput = document.getElementById('searchInput');             // Search bar input
 const importantOnly = document.getElementById('importantOnly');         // Checkbox to filter only important notes
@@ -8,44 +8,40 @@ const noteDate = document.getElementById('noteDate');                   // Input
 const noteImportant = document.getElementById('noteImportant');         // Checkbox to mark note as important
 const toggleDarkMode = document.getElementById('toggleDarkMode');       // Button to toggle dark mode
 
-// STATE VARIABLES
-const API_BASE = "http://localhost:3000"; // local JSON-server endpoint
+// ===== STATE VARIABLES =====
+const API_BASE = "http://localhost:3000";                               // Local JSON-server endpoint
+let allNotes = [];                                                      // Array to hold notes from API or localStorage
+noteForm.dataset.editingId = '';                                        // Tracks which note is currently being edited
+let recentlyDeletedNote = null;                                         // Stores recently deleted note for Undo
 
-let allNotes = [];                       // Array holding all notes fetched from API or local storage
-noteForm.dataset.editingId = '';         // Keeps track of which note is being edited (if any)
-let recentlyDeletedNote = null;          // Temporarily holds recently deleted note for undo feature
-
-// INITIALIZE QUILL EDITOR
-//mount Quill on the #quillEditor div and bind our custom toolbar
+// ===== INITIALIZE QUILL EDITOR =====
 const quill = new Quill('#quillEditor', {
   theme: 'snow',
-  modules: {
-    toolbar: '#toolbar'
-  }
+  modules: { toolbar: '#toolbar' }
 });
 
-// TOAST MESSAGE HELPER
-// Creates a floating toast message to show feedback
+// ===== TOAST MESSAGE UTILITY =====
+// Creates a floating notification message
 function showToast(message) {
   const toast = document.createElement('div');
   toast.className = 'toast show';
   toast.textContent = message;
 
-  // Style toast appropriately for dark mode
   if (document.body.classList.contains('dark-mode')) {
     toast.style.background = '#333';
     toast.style.color = 'white';
   }
 
   document.body.appendChild(toast);
+
   setTimeout(() => {
     toast.classList.remove('show');
     document.body.removeChild(toast);
   }, 3000);
 }
 
-// MODAL CONFIRMATION HELPER
-// Displays a confirmation modal before destructive actions like delete
+// ===== MODAL CONFIRMATION UTILITY =====
+// Displays a modal to confirm destructive actions like delete
 function showModal(message, onConfirm) {
   const overlay = document.createElement('div');
   overlay.className = 'modal-overlay';
@@ -58,46 +54,37 @@ function showModal(message, onConfirm) {
   `;
   document.body.appendChild(overlay);
 
-  const dismiss = () => {
-    if (document.body.contains(overlay)) {
-      document.body.removeChild(overlay);
-    }
-  };
-
-  overlay.querySelector('#confirmDelete').onclick = () => {
-    onConfirm();
-    dismiss();
-  };
+  const dismiss = () => document.body.contains(overlay) && document.body.removeChild(overlay);
+  overlay.querySelector('#confirmDelete').onclick = () => { onConfirm(); dismiss(); };
   overlay.querySelector('#cancelDelete').onclick = dismiss;
-  setTimeout(dismiss, 5000);
+
+  setTimeout(dismiss, 5000); // Auto-close modal after 5 seconds
 }
 
-// LOCAL STORAGE UTILITIES
-// Save notes to localStorage in case of offline access
+// ===== LOCAL STORAGE UTILITIES =====
 function saveToLocal(notes) {
   localStorage.setItem('localNotes', JSON.stringify(notes));
 }
 
-// Load saved notes from localStorage
 function loadFromLocal() {
   const saved = localStorage.getItem('localNotes');
   return saved ? JSON.parse(saved) : [];
 }
 
-// FETCH NOTES FROM API OR FALLBACK
+// ===== FETCH NOTES FROM API OR FALLBACK =====
 async function fetchNotes() {
   try {
     const res = await fetch(`${API_BASE}/notes`);
     if (!res.ok) throw new Error();
-    allNotes = await res.json(); // Load from server
-    saveToLocal(allNotes);
+    allNotes = await res.json();     // Load from API
+    saveToLocal(allNotes);           // Update local storage
   } catch {
-    allNotes = loadFromLocal(); // Load from localStorage if offline
+    allNotes = loadFromLocal();      // Fallback to local storage
   }
-  renderNotes(); // Display on page
+  renderNotes();                     // Re-render UI
 }
 
-// RENDER NOTES ON THE PAGE
+// ===== RENDER NOTES ON SCREEN =====
 function renderNotes() {
   const query = searchInput.value.toLowerCase();
 
@@ -127,7 +114,7 @@ function renderNotes() {
   });
 }
 
-// FORM SUBMIT HANDLER
+// ===== FORM SUBMIT HANDLER =====
 noteForm.addEventListener('submit', async (e) => {
   e.preventDefault();
 
@@ -136,7 +123,7 @@ noteForm.addEventListener('submit', async (e) => {
 
   const note = {
     title: noteTitle.value,
-    body: quill.root.innerHTML, // Quill content as HTML
+    body: quill.root.innerHTML,
     date: noteDate.value || new Date().toISOString().split('T')[0],
     important: noteImportant.checked
   };
@@ -151,7 +138,6 @@ noteForm.addEventListener('submit', async (e) => {
       });
       if (!res.ok) throw new Error('Update failed');
       allNotes = allNotes.map(n => n.id.toString() === editingId ? { ...n, ...note } : n);
-      saveToLocal(allNotes);
       showToast('Note updated');
     } else {
       res = await fetch(`${API_BASE}/notes`, {
@@ -163,12 +149,13 @@ noteForm.addEventListener('submit', async (e) => {
       showToast('Note saved');
     }
 
+    saveToLocal(allNotes);
     noteForm.reset();
-    quill.root.innerHTML = '';        // Clear editor
-    noteForm.dataset.editingId = '';  // Reset editing state
-    fetchNotes();                     // Refresh display
+    quill.root.innerHTML = '';
+    noteForm.dataset.editingId = '';
+    fetchNotes();
   } catch {
-    // Handle offline fallback
+    // Offline fallback
     showToast(isEdit ? 'Update failed. Saved offline.' : 'Save failed. Using offline storage.');
     if (isEdit) {
       allNotes = allNotes.map(n => n.id.toString() === editingId ? { ...n, ...note } : n);
@@ -184,18 +171,18 @@ noteForm.addEventListener('submit', async (e) => {
   }
 });
 
-// EDIT NOTE
+// ===== EDIT NOTE HANDLER =====
 window.editNote = function (id) {
   const note = allNotes.find(n => n.id.toString() === id.toString());
   if (!note) return;
   noteTitle.value = note.title;
   noteDate.value = note.date;
   noteImportant.checked = note.important;
-  quill.root.innerHTML = note.body; // Load HTML into Quill
+  quill.root.innerHTML = note.body;
   noteForm.dataset.editingId = note.id;
 };
 
-// DELETE NOTE + UNDO
+// ===== DELETE NOTE WITH UNDO SUPPORT =====
 window.deleteNote = function (id) {
   const note = allNotes.find(n => n.id === id || n.id.toString() === id.toString());
   recentlyDeletedNote = note;
@@ -212,12 +199,17 @@ window.deleteNote = function (id) {
       showToast('Deleted offline');
     }
 
-    const undo = document.createElement('button');
-    undo.textContent = 'Undo';
-    undo.className = 'undo-toast';
-    document.body.appendChild(undo);
+    // Create Undo UI
+    const undoToast = document.createElement('div');
+    undoToast.className = 'undo-toast';
+    undoToast.innerHTML = `
+      <span>Note deleted</span>
+      <button id="undoBtn">Undo</button>
+    `;
+    document.body.appendChild(undoToast);
 
-    undo.onclick = async () => {
+    // Handle Undo click
+    document.getElementById('undoBtn').onclick = async () => {
       if (!recentlyDeletedNote) return;
       try {
         await fetch(`${API_BASE}/notes`, {
@@ -233,14 +225,15 @@ window.deleteNote = function (id) {
         renderNotes();
         showToast('Undo offline');
       }
-      document.body.removeChild(undo);
+      document.body.removeChild(undoToast);
       recentlyDeletedNote = null;
       fetchNotes();
     };
 
+    // Auto-dismiss after 5 seconds
     setTimeout(() => {
-      if (document.body.contains(undo)) {
-        document.body.removeChild(undo);
+      if (document.body.contains(undoToast)) {
+        document.body.removeChild(undoToast);
       }
       recentlyDeletedNote = null;
     }, 5000);
@@ -249,15 +242,15 @@ window.deleteNote = function (id) {
   showModal('Delete this note?', confirmAndDelete);
 };
 
-// FILTER EVENTS
+// ===== FILTER EVENTS =====
 searchInput.addEventListener('input', renderNotes);
 importantOnly.addEventListener('change', renderNotes);
 
-// DARK MODE TOGGLE
+// ===== DARK MODE TOGGLE =====
 toggleDarkMode.addEventListener('click', () => {
   const isDark = document.body.classList.toggle('dark-mode');
   toggleDarkMode.textContent = isDark ? 'Light Mode' : 'Dark Mode';
 });
 
-// FETCH NOTES ON LOAD
+// ===== INITIAL LOAD =====
 fetchNotes().then(renderNotes);
