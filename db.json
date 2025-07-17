@@ -15,13 +15,6 @@
       "important": false
     },
     {
-      "id": "5",
-      "title": "Weekend Plans",
-      "body": "<p>Visit the farmers' market and try that new coffee place downtown ☕️</p>",
-      "date": "2025-07-13",
-      "important": false
-    },
-    {
       "id": "6",
       "title": "Book Summary: Atomic Habits",
       "body": "<p><strong>Key Insight:</strong> Small habits compound over time.<br><em>“You do not rise to the level of your goals, you fall to the level of your systems.”</em></p>",
@@ -45,7 +38,7 @@
     {
       "id": "9",
       "title": "App Design Inspiration",
-      "body": "<p>Loved the layout on <a href='https://dribbble.com'>Dribbble</a>. Minimalist and clean UI with soft shadows.</p>",
+      "body": "<p>Loved the layout on Dribble. Minimalist and clean UI with soft shadows.</p>",
       "date": "2025-07-15",
       "important": false
     },
