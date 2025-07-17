@@ -41,13 +41,6 @@
       "body": "<p>Loved the layout on Dribble. Minimalist and clean UI with soft shadows.</p>",
       "date": "2025-07-15",
       "important": false
-    },
-    {
-      "id": "10",
-      "title": "Todo for Tomorrow",
-      "body": "<ol><li>Fix Quill editor spacing</li><li>Add dark mode toggle</li><li>Push changes to GitHub</li></ol>",
-      "date": "2025-07-16",
-      "important": true
     }
   ]
 }
