@@ -2,74 +2,82 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Daily Journal & Notes</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>daily journal & notes</title>
 
-  <!-- App Styles -->
+  <!-- app main external css -->
   <link rel="stylesheet" href="style.css" />
 
-  <!-- Local Quill CSS and JS -->
-<link rel="stylesheet" href="libs/quill.snow.css" />
-<script src="libs/quill.min.js" defer></script>
+  <!-- quill css and js (local) -->
+  <link rel="stylesheet" href="libs/quill.snow.css" />
+  <script src="libs/quill.min.js" defer></script>
 
-  <!--Main App Script (after Quill) -->
+  <!-- main script -->
   <script src="script.js" defer></script>
 </head>
 
 <body>
-  <!-- Header Section -->
+  <!-- header section -->
   <header>
     <h1>Daily Journal & Notes</h1>
-    <input type="text" id="searchInput" placeholder="Search notes..." />
+
+    <!-- search input -->
+    <input type="text" id="searchInput" placeholder="search notes..." />
+
+    <!-- important only filter -->
     <label>
-      <input type="checkbox" id="importantOnly" /> Important Only
+      <input type="checkbox" id="importantOnly" />
+      important only
     </label>
-    <button id="toggleDarkMode">Toggle Dark Mode</button>
+
+    <!-- toggle theme -->
+    <button id="toggleDarkMode">toggle dark mode</button>
   </header>
 
-  <!-- Main Content Area -->
   <main>
-    <!-- Notes will be displayed here -->
+    <!-- where notes will render -->
     <section id="notesContainer"></section>
 
-    <!-- Form Section -->
+    <!-- form for adding/editing a note -->
     <section id="noteFormSection">
-      <h2 id="formTitle">Add A New Note</h2>
+      <h2 id="formTitle">Add a New Note</h2>
 
       <form id="noteForm">
-        <input type="text" id="noteTitle" placeholder="Title" required /><br />
+        <!-- note title input -->
+        <input type="text" id="noteTitle" placeholder="title" required /><br />
 
-        <!-- Custom Toolbar for Quill -->
+        <!-- quill custom toolbar -->
         <div id="toolbar">
           <select class="ql-header">
             <option selected></option>
-            <option value="1">Heading 1</option>
-            <option value="2">Heading 2</option>
-            <option value="3">Heading 3</option>
-            <option value="4">Heading 4</option>
-            <option value="5">Heading 5</option>
-            <option value="6">Heading 6</option>
+            <option value="1">heading 1</option>
+            <option value="2">heading 2</option>
+            <option value="3">heading 3</option>
+            <option value="4">heading 4</option>
+            <option value="5">heading 5</option>
+            <option value="6">heading 6</option>
           </select>
-          <button class="ql-bold" title="Bold"></button>
-          <button class="ql-italic" title="Italic"></button>
-          <button class="ql-underline" title="Underline"></button>
-          <button class="ql-list" value="ordered" title="Ordered List"></button>
-          <button class="ql-list" value="bullet" title="Bullet List"></button>
+          <button class="ql-bold" title="bold"></button>
+          <button class="ql-italic" title="italic"></button>
+          <button class="ql-underline" title="underline"></button>
+          <button class="ql-list" value="ordered" title="ordered list"></button>
+          <button class="ql-list" value="bullet" title="bullet list"></button>
         </div>
 
-        <!-- Quill Editor -->
+        <!-- quill editor -->
         <div id="quillEditor"></div><br />
 
+        <!-- date input -->
         <input type="date" id="noteDate" /><br />
 
-        <!-- Mark as Important -->
+        <!-- important flag -->
         <div id="importantLabel">
           <span>Mark as Important</span>
           <input type="checkbox" id="noteImportant" />
         </div>
 
-        <!-- Submit Button -->
-        <button type="submit">Save Note</button>
+        <!-- submit note -->
+        <button type="submit">save note</button>
       </form>
     </section>
   </main>
