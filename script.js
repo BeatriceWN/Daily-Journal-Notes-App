@@ -1,37 +1,48 @@
-// DOM element references
-const notesContainer = document.getElementById('notesContainer');
-const searchInput = document.getElementById('searchInput');
-const importantOnly = document.getElementById('importantOnly');
-const noteForm = document.getElementById('noteForm');
-const noteTitle = document.getElementById('noteTitle');
-const noteDate = document.getElementById('noteDate');
-const noteImportant = document.getElementById('noteImportant');
-const toggleDarkMode = document.getElementById('toggleDarkMode');
+// =============================
+// DOM ELEMENT REFERENCES
+// =============================
+const notesContainer = document.getElementById('notesContainer');       // Where all notes will be displayed
+const searchInput = document.getElementById('searchInput');             // Search bar input
+const importantOnly = document.getElementById('importantOnly');         // Checkbox to filter only important notes
+const noteForm = document.getElementById('noteForm');                   // The main note form
+const noteTitle = document.getElementById('noteTitle');                 // Input for note title
+const noteDate = document.getElementById('noteDate');                   // Input for date
+const noteImportant = document.getElementById('noteImportant');         // Checkbox to mark note as important
+const toggleDarkMode = document.getElementById('toggleDarkMode');       // Button to toggle dark mode
 
-const API_BASE = "http://localhost:3000";
+// =============================
+// STATE VARIABLES
+// =============================
+const API_BASE = "http://localhost:3000"; // Your local JSON-server endpoint
 
-let allNotes = [];
-noteForm.dataset.editingId = '';
-let recentlyDeletedNote = null;
+let allNotes = [];                       // Array holding all notes fetched from API or local storage
+noteForm.dataset.editingId = '';         // Keeps track of which note is being edited (if any)
+let recentlyDeletedNote = null;          // Temporarily holds recently deleted note for undo feature
 
-// Initialize Quill rich text editor
+// INITIALIZE QUILL EDITOR
+// We mount Quill on the #quillEditor div and bind our custom toolbar
 const quill = new Quill('#quillEditor', {
-  placeholder: 'Type your note...',
   theme: 'snow',
   modules: {
     toolbar: '#toolbar'
   }
 });
 
-// Display toast messages (light/dark mode aware)
+// =============================
+// TOAST MESSAGE HELPER
+// =============================
+// Creates a floating toast message to show feedback to users
 function showToast(message) {
   const toast = document.createElement('div');
   toast.className = 'toast show';
   toast.textContent = message;
+
+  // Style toast appropriately for dark mode
   if (document.body.classList.contains('dark-mode')) {
     toast.style.background = '#333';
     toast.style.color = 'white';
   }
+
   document.body.appendChild(toast);
   setTimeout(() => {
     toast.classList.remove('show');
@@ -39,7 +50,10 @@ function showToast(message) {
   }, 3000);
 }
 
-// Display modal confirmation dialog with auto-dismiss
+// =============================
+// MODAL CONFIRMATION HELPER
+// =============================
+// Displays a confirmation modal before destructive actions like delete
 function showModal(message, onConfirm) {
   const overlay = document.createElement('div');
   overlay.className = 'modal-overlay';
@@ -63,45 +77,52 @@ function showModal(message, onConfirm) {
     dismiss();
   };
   overlay.querySelector('#cancelDelete').onclick = dismiss;
-
-  // Auto-dismiss modal after 5 seconds
   setTimeout(dismiss, 5000);
 }
 
-// Save notes to localStorage
+// =============================
+// LOCAL STORAGE UTILITIES
+// =============================
+// Save notes to localStorage in case of offline access
 function saveToLocal(notes) {
   localStorage.setItem('localNotes', JSON.stringify(notes));
 }
 
-// Load notes from localStorage
+// Load saved notes from localStorage
 function loadFromLocal() {
   const saved = localStorage.getItem('localNotes');
   return saved ? JSON.parse(saved) : [];
 }
 
-// Fetch notes from server or fallback to localStorage
+// =============================
+// FETCH NOTES FROM API OR FALLBACK
+// =============================
 async function fetchNotes() {
   try {
     const res = await fetch(`${API_BASE}/notes`);
     if (!res.ok) throw new Error();
-    allNotes = await res.json();
+    allNotes = await res.json(); // Load from server
     saveToLocal(allNotes);
   } catch {
-    allNotes = loadFromLocal();
+    allNotes = loadFromLocal(); // Load from localStorage if offline
   }
-  renderNotes();
+  renderNotes(); // Display on page
 }
 
-// Render filtered notes to the DOM
+// =============================
+// RENDER NOTES ON THE PAGE
+// =============================
 function renderNotes() {
+  const query = searchInput.value.toLowerCase();
+
   const filtered = allNotes.filter(note => {
-    const query = searchInput.value.toLowerCase();
     const matchesText = note.title.toLowerCase().includes(query) || note.body.toLowerCase().includes(query);
     const matchesImportance = importantOnly.checked ? note.important : true;
     return matchesText && matchesImportance;
   });
 
-  notesContainer.innerHTML = '';
+  notesContainer.innerHTML = ''; // Clear previous notes
+
   filtered.forEach(note => {
     const noteDiv = document.createElement('div');
     noteDiv.className = 'note' + (note.important ? ' important' : '');
@@ -120,8 +141,9 @@ function renderNotes() {
   });
 }
 
-// Handle form submission for creating or updating notes
-// Handle form submission for creating or updating notes
+// =============================
+// FORM SUBMIT HANDLER
+// =============================
 noteForm.addEventListener('submit', async (e) => {
   e.preventDefault();
 
@@ -130,7 +152,7 @@ noteForm.addEventListener('submit', async (e) => {
 
   const note = {
     title: noteTitle.value,
-    body: quill.root.innerHTML,
+    body: quill.root.innerHTML, // Quill content as HTML
     date: noteDate.value || new Date().toISOString().split('T')[0],
     important: noteImportant.checked
   };
@@ -138,70 +160,62 @@ noteForm.addEventListener('submit', async (e) => {
   try {
     let res;
     if (isEdit) {
-      // PATCH the note
       res = await fetch(`${API_BASE}/notes/${editingId}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(note)
       });
-      if (!res.ok) throw new Error('Failed to update note on server');
-
-      // Optional: update local array manually to reflect change immediately
+      if (!res.ok) throw new Error('Update failed');
       allNotes = allNotes.map(n => n.id.toString() === editingId ? { ...n, ...note } : n);
       saveToLocal(allNotes);
-
       showToast('Note updated');
     } else {
-      // POST new note
       res = await fetch(`${API_BASE}/notes`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(note)
       });
-      if (!res.ok) throw new Error('Failed to save note');
-
+      if (!res.ok) throw new Error('Save failed');
       showToast('Note saved');
     }
 
-    // Clear form + editor
     noteForm.reset();
-    quill.setContents([]);
-    noteForm.dataset.editingId = '';
-
-    // Refresh notes list
-    fetchNotes();
+    quill.root.innerHTML = '';        // Clear editor
+    noteForm.dataset.editingId = '';  // Reset editing state
+    fetchNotes();                     // Refresh display
   } catch {
-    // Offline fallback
-    showToast(isEdit ? 'Update failed. Saving offline.' : 'Saving failed. Using offline storage.');
-    
+    // Handle offline fallback
+    showToast(isEdit ? 'Update failed. Saved offline.' : 'Save failed. Using offline storage.');
     if (isEdit) {
       allNotes = allNotes.map(n => n.id.toString() === editingId ? { ...n, ...note } : n);
     } else {
       note.id = crypto.randomUUID();
       allNotes.push(note);
     }
-
     saveToLocal(allNotes);
     renderNotes();
-    noteForm.dataset.editingId = '';
-    quill.setContents([]);
+    quill.root.innerHTML = '';
     noteForm.reset();
+    noteForm.dataset.editingId = '';
   }
 });
 
-// Populate form fields for editing a note
+// =============================
+// EDIT NOTE
+// =============================
 window.editNote = function (id) {
   const note = allNotes.find(n => n.id.toString() === id.toString());
   if (!note) return;
-
   noteTitle.value = note.title;
   noteDate.value = note.date;
   noteImportant.checked = note.important;
+  quill.root.innerHTML = note.body; // Load HTML into Quill
   noteForm.dataset.editingId = note.id;
-  quill.clipboard.dangerouslyPasteHTML(note.body);
 };
 
-// Delete a note with confirmation, toast, and undo
+// =============================
+// DELETE NOTE + UNDO
+// =============================
 window.deleteNote = function (id) {
   const note = allNotes.find(n => n.id === id || n.id.toString() === id.toString());
   recentlyDeletedNote = note;
@@ -215,10 +229,9 @@ window.deleteNote = function (id) {
       allNotes = allNotes.filter(n => n.id !== id);
       saveToLocal(allNotes);
       renderNotes();
-      showToast('Note deleted offline');
+      showToast('Deleted offline');
     }
 
-    // Create undo button
     const undo = document.createElement('button');
     undo.textContent = 'Undo';
     undo.className = 'undo-toast';
@@ -256,17 +269,21 @@ window.deleteNote = function (id) {
   showModal('Delete this note?', confirmAndDelete);
 };
 
-// Apply live filtering as user types or toggles important only
+// =============================
+// FILTER EVENTS
+// =============================
 searchInput.addEventListener('input', renderNotes);
 importantOnly.addEventListener('change', renderNotes);
 
-// Toggle light/dark mode
+// =============================
+// DARK MODE TOGGLE
+// =============================
 toggleDarkMode.addEventListener('click', () => {
   const isDark = document.body.classList.toggle('dark-mode');
   toggleDarkMode.textContent = isDark ? 'Light Mode' : 'Dark Mode';
 });
 
-// Load notes when page loads
-fetchNotes();
-
-
+// =============================
+// FETCH NOTES ON LOAD
+// =============================
+fetchNotes().then(renderNotes);
