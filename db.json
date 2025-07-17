@@ -48,13 +48,6 @@
       "body": "<ol><li>Fix Quill editor spacing</li><li>Add dark mode toggle</li><li>Push changes to GitHub</li></ol>",
       "date": "2025-07-16",
       "important": true
-    },
-    {
-      "id": "4bb7",
-      "title": "Complete CIV Technical Architecture Document (TAD)",
-      "body": "<ol><li><strong><em><u>The integration designs are ready and submitted for review. Meanwhile, work on completing the TAD and append the designs once review and alignmenment process is complet</u></em></strong></li></ol>",
-      "date": "2025-07-15",
-      "important": false
     }
   ]
 }
