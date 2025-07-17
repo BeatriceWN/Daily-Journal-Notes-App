@@ -8,6 +8,8 @@ const noteDate = document.getElementById('noteDate');
 const noteImportant = document.getElementById('noteImportant');
 const toggleDarkMode = document.getElementById('toggleDarkMode');
 
+const API_BASE = "http://localhost:3000";
+
 let allNotes = [];
 noteForm.dataset.editingId = '';
 let recentlyDeletedNote = null;
@@ -80,7 +82,7 @@ function loadFromLocal() {
 // Fetch notes from server or fallback to localStorage
 async function fetchNotes() {
   try {
-    const res = await fetch('/notes');
+    const res = await fetch(`${API_BASE}/notes`);
     if (!res.ok) throw new Error();
     allNotes = await res.json();
     saveToLocal(allNotes);
@@ -119,6 +121,7 @@ function renderNotes() {
 }
 
 // Handle form submission for creating or updating notes
+// Handle form submission for creating or updating notes
 noteForm.addEventListener('submit', async (e) => {
   e.preventDefault();
 
@@ -133,9 +136,10 @@ noteForm.addEventListener('submit', async (e) => {
   };
 
   try {
+    let res;
     if (isEdit) {
       // PATCH the note
-      const res = await fetch(`/notes/${editingId}`, {
+      res = await fetch(`${API_BASE}/notes/${editingId}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(note)
@@ -149,7 +153,7 @@ noteForm.addEventListener('submit', async (e) => {
       showToast('Note updated');
     } else {
       // POST new note
-      const res = await fetch('/notes', {
+      res = await fetch(`${API_BASE}/notes`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(note)
@@ -185,7 +189,6 @@ noteForm.addEventListener('submit', async (e) => {
   }
 });
 
-
 // Populate form fields for editing a note
 window.editNote = function (id) {
   const note = allNotes.find(n => n.id.toString() === id.toString());
@@ -205,7 +208,7 @@ window.deleteNote = function (id) {
 
   const confirmAndDelete = async () => {
     try {
-      await fetch(`/notes/${id}`, { method: 'DELETE' });
+      await fetch(`${API_BASE}/notes/${id}`, { method: 'DELETE' });
       showToast('Note deleted');
       fetchNotes();
     } catch {
@@ -224,7 +227,7 @@ window.deleteNote = function (id) {
     undo.onclick = async () => {
       if (!recentlyDeletedNote) return;
       try {
-        await fetch('/notes', {
+        await fetch(`${API_BASE}/notes`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(recentlyDeletedNote)
@@ -265,3 +268,5 @@ toggleDarkMode.addEventListener('click', () => {
 
 // Load notes when page loads
 fetchNotes();
+
+
