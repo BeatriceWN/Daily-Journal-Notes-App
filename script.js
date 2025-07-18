@@ -199,8 +199,7 @@ window.deleteNote = function (id) {
       showToast('Deleted offline');
     }
   };
-    // Create Undo UI
-    // Create Undo U
+    // Create Undo toast
 const undoToast = document.createElement('div');
 undoToast.className = 'undo-toast';
 undoToast.innerHTML = `
