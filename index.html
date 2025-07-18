@@ -19,24 +19,27 @@
   <body>
     <!-- header section -->
     <header>
-      <h1>Daily Journal & Notes</h1>
+  <h1>Daily Journal & Notes</h1>
 
-      <!-- header top row: left-aligned search and filter, right-aligned button -->
-     <div class="header-row">
-      <div class="header-left">
-        <!-- search input -->
-        <input type="text" id="searchInput" placeholder="search notes..." />
-
-        <!-- important only filter -->
-        <label>
+  <!-- header top row: left-aligned search and filter, right-aligned toggle -->
+  <div class="header-row">
+    
+    <!-- left side -->
+    <div class="header-left">
+      <input type="text" id="searchInput" placeholder="search notes..." />
+      <label>
         <input type="checkbox" id="importantOnly" />
         important only
       </label>
-      
-        <!-- toggle theme -->
-        <button id="toggleDarkMode">toggle dark mode</button>
-      </div>
-    </header>
+    </div>
+
+    <!-- right side -->
+    <div class="header-right">
+      <button id="toggleDarkMode">toggle dark mode</button>
+    </div>
+
+  </div>
+</header>
 
     <main>
       <!-- where notes will render -->
