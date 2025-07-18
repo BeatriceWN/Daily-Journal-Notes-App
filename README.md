@@ -1,87 +1,111 @@
 ````markdown
 # Daily Journal & Notes App
 
-A lightweight, responsive, and offline-friendly journaling web app that allows users to write, format, search, and manage daily journal entries or notes. Built using vanilla JavaScript, Quill editor, and a local JSON server backend.
+## Description
+
+**Daily Journal & Notes App** is a rich-text, browser-based journaling and note-taking application that uses Quill WYSIWYG editor, a local `db.json` file for persistent storage, and a custom `server.js` with JSON Server to simulate a RESTful API. Users can create, edit, delete, search, and filter their notes, and also toggle between light and dark mode.
+
+Live App: [https://daily-journal-notes-app-4.onrender.com](https://daily-journal-notes-app-4.onrender.com)
 
 ---
 
-## Features
+## Project Overview
 
-- Rich text editing using Quill with a custom toolbar
-- Dark mode toggle
-- Search and filter notes
-- Mark notes as important
-- Undo delete functionality (5-second timeout)
-- Offline support via localStorage fallback
-- Add, edit, and delete notes
-- Live filtering by search term and importance
-- Auto-date entry when none is selected
-- Fully styled UI
+This project enables users to keep a daily journal or take structured notes with rich formatting using Quill. The app supports all CRUD operations with a simple UI and local JSON-based backend.
+
+### Key Features:
+
+- **Rich Text Editor**  
+  Integrated using Quill, users can format their notes with headings, bold text, lists, and more.
+
+- **Create & Edit Notes**  
+  Users can add new notes, edit existing ones with real-time updates.
+
+- **Delete Notes with Confirmation Modal**  
+  Deletes are confirmed using a modal popup to prevent accidental removal.
+
+- **Filter Notes**  
+  Users can:
+  - Search notes by title or content (case-insensitive).
+  - Toggle "Important Only" to see only high-priority notes.
+
+- **Dark Mode Toggle**  
+  Users can switch between light and dark mode for comfortable viewing.
+
+- **LocalStorage Backup**  
+  Notes are cached to `localStorage` if the network fails, and restored automatically.
+
+- **Responsive Layout**  
+  App works well across devices and adapts to various screen sizes, including mobile and tablet devices.
 
 ---
 
-## Tech Stack
+## Technologies Used
 
-| Layer        | Technology             |
-|--------------|------------------------|
-| Frontend     | HTML, CSS, JavaScript  |
-| Text Editor  | Quill (custom toolbar) |
-| Styling      | Flexbox, Media Queries |
-| Backend API  | JSON Server (`db.json`)|
-| Storage      | localStorage fallback  |
+- HTML5, CSS3, JavaScript (ES6+)
+- [Quill.js](https://quilljs.com) – WYSIWYG text editor
+- Node.js + Express – Custom `server.js` to serve frontend and mock API
+- json-server – Used for simulating a REST API with `db.json`
+- localStorage – As a fallback in case of failed fetch calls
+- Render – For hosting the app and backend
 
 ---
 
-## Getting Started
+## Installations
 
-### 1. Clone this repository
+To run this app locally, you'll need:
+
+- Node.js & npm
+- Git
+
+Then install required dependencies:
 
 ```bash
-git clone https://github.com/your-username/Daily-Journal-Notes-App.git
-cd Daily-Journal-Notes-App
+npm install
 ````
 
-### 2. Install JSON Server (if not already installed)
-
-```bash
-npm install -g json-server
-```
-
-### 3. Run the backend (JSON server)
-
-```bash
-json-server --watch db.json --port 3000
-```
-
-> The app expects the API to be available at: `http://localhost:3000/notes`
-
-### 4. Open `index.html` in your browser
-
-You can use the Live Server extension in VS Code or open the file directly in a browser.
+This installs `express` and `json-server`.
 
 ---
 
-## Contributing
+## Project Setup
 
-Pull requests are welcome. To contribute:
+### 1. Clone the Repo
 
-1. Fork the repository
-2. Create your feature branch: `git checkout -b feature/YourFeature`
-3. Commit your changes: `git commit -m "Add YourFeature"`
-4. Push to the branch: `git push origin feature/YourFeature`
-5. Open a pull request
+```bash
+git clone git@github.com:BeatriceWN/Daily-Journal-Notes-App.git
+cd Daily-Journal-Notes-App
+```
 
----
+### 2. Install Dependencies
 
-## License
+```bash
+npm install
+```
 
-This project is open source and free to use.
+### 3. Start the Server
+
+```bash
+npm start
+```
+
+This will run the app using your custom `server.js`.
+
+### 4. Open App in Browser
+
+Open [http://localhost:3000](http://localhost:3000).
 
 ---
 
 ## Author
 
-Created by Beatrice Wambui
-2025
+**Beatrice Wambui**
+GitHub: [@BeatriceWN](https://github.com/BeatriceWN)
+
+---
+
+## Licence
+
+This project is licensed under the MIT License. See `LICENSE` file for details.
 
 ```
