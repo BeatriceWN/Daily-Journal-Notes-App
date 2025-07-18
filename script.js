@@ -200,44 +200,53 @@ window.deleteNote = function (id) {
     }
 
     // Create Undo UI
-    const undoToast = document.createElement('div');
-    undoToast.className = 'undo-toast';
-    undoToast.innerHTML = `
-      <span>Note deleted</span>
-      <button id="undoBtn">Undo</button>
-    `;
-    document.body.appendChild(undoToast);
+    // Create Undo UI
+const undoToast = document.createElement('div');
+undoToast.className = 'undo-toast';
+undoToast.innerHTML = `
+  <span>Note deleted</span>
+  <button id="undoBtn">Undo</button>
+  <button id="closeUndo">✖</button>
+`;
+document.body.appendChild(undoToast);
 
-    // Handle Undo click
-    document.getElementById('undoBtn').onclick = async () => {
-      if (!recentlyDeletedNote) return;
-      try {
-        await fetch(`${API_BASE}/notes`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(recentlyDeletedNote)
-        });
-        showToast('Undo successful');
-      } catch {
-        recentlyDeletedNote.id = crypto.randomUUID();
-        allNotes.push(recentlyDeletedNote);
-        saveToLocal(allNotes);
-        renderNotes();
-        showToast('Undo offline');
-      }
-      document.body.removeChild(undoToast);
-      recentlyDeletedNote = null;
-      fetchNotes();
-    };
+// Handle Undo click
+document.getElementById('undoBtn').onclick = async () => {
+  if (!recentlyDeletedNote) return;
+  try {
+    await fetch(`${API_BASE}/notes`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(recentlyDeletedNote)
+    });
+    showToast('Undo successful');
+  } catch {
+    recentlyDeletedNote.id = crypto.randomUUID();
+    allNotes.push(recentlyDeletedNote);
+    saveToLocal(allNotes);
+    renderNotes();
+    showToast('Undo offline');
+  }
+  document.body.removeChild(undoToast);
+  recentlyDeletedNote = null;
+  fetchNotes();
+};
 
-    // Auto-dismiss after 5 seconds
-    setTimeout(() => {
-      if (document.body.contains(undoToast)) {
-        document.body.removeChild(undoToast);
-      }
-      recentlyDeletedNote = null;
-    }, 5000);
-  };
+// Manual close handler
+document.getElementById('closeUndo').onclick = () => {
+  if (document.body.contains(undoToast)) {
+    document.body.removeChild(undoToast);
+  }
+  recentlyDeletedNote = null;
+};
+
+// Auto-dismiss after 6 seconds
+setTimeout(() => {
+  if (document.body.contains(undoToast)) {
+    document.body.removeChild(undoToast);
+  }
+  recentlyDeletedNote = null;
+}, 6000);
 
   showModal('Delete this note?', confirmAndDelete);
 };

@@ -253,6 +253,21 @@ form input[type="date"] {
   z-index: 998;
 }
 
+/** Close button for Undo toast **/
+.undo-toast button#closeUndo {
+  background: transparent;
+  border: none;
+  color: #8a0cdf;
+  font-weight: bold;
+  font-size: 1rem;
+  margin-left: 0.5rem;
+  cursor: pointer;
+}
+
+.undo-toast button#closeUndo:hover {
+  color: #4b0175;
+}
+
 /** Fullscreen dark background when showing modals **/
 .modal-overlay {
   position: fixed;
