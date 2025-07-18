@@ -112,23 +112,23 @@ header label {
 }
 
 /** The dark mode toggle button (also used as a normal button sometimes) **/
-#toggleDarkMode {
-  padding: 0.4rem 0.6rem;     /* Slightly tighter padding */
-  font-size: 0.9rem;          /* A bit smaller text */
-  width: auto;                /* Only take space the text needs */
+#darkMode {
+  padding: 0.4rem 0.6rem;    
+  font-size: 0.9rem;          
+  width: auto;                
   white-space: nowrap;        /* Prevent text from breaking to new line */
   cursor: pointer;            /* Show pointer on hover */
   border: none;               /* Remove outline */
-  background-color: #8a0cdf;  /* Theme purple */
-  color: white;               /* White text for contrast */
-  border-radius: 4px;         /* Soft corners */
+  background-color: #7639d1; 
+  color: white;              
+  border-radius: 4px;         
 }
 
 /** Shared styling for all buttons including hover effect **/
 button {
   padding: 0.5rem 1rem;
   border: none;
-  background-color: #8a0cdf;
+  background-color: #3f0b82;
   color: white;
   border-radius: 4px;
   cursor: pointer;
@@ -136,7 +136,7 @@ button {
 
 button:hover,
 #toggleDarkMode:hover {
-  background-color: #6a0bbf;  /* Slightly darker purple on hover */
+  background-color: #6a0bbf;  
 }
 
 /* ───────────────────────────
@@ -149,7 +149,7 @@ button:hover,
   border-radius: 6px;
   padding: 1rem;
   margin-bottom: 1rem;
-  background-color: white;    /* Default background for light mode */
+  background-color: rgba(228, 208, 242, 0.077);    /* Default background for light mode */
   transition: box-shadow 0.2s ease;  /* Animate hover effect */
 }
 
@@ -297,11 +297,11 @@ body.dark-mode header {
 body.dark-mode .note {
   background-color: #22303C;
   color: #ddd;
-  border-color: #444;
+  border-color: #3d415a;
 }
 
 body.dark-mode .note.important {
-  background-color: #22303B;
+  background-color: #272c3d;
 }
 
 body.dark-mode #toolbar,
@@ -325,7 +325,7 @@ body.dark-mode .ql-toolbar button {
 
 .add-note-card {
   background-color: #f3e7fb;
-  border: 1px solid #8a0cdf;
+  border: 1px solid #290655;
   border-radius: 12px;
   padding: 1.5rem;
   margin-top: 2rem;
