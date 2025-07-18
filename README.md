@@ -1,7 +1,3 @@
-Thanks for checking in! Here's the fully updated **README.md** content with the **new Render live URL** added — nothing else has been altered as per your instructions:
-
----
-
 ````markdown
 # Daily Journal & Notes App
 
