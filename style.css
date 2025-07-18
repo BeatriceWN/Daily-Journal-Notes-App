@@ -124,6 +124,7 @@ button:hover,
 .note {
   border: 1px solid #a658e1;
   border-radius: 6px;
+  border-left: 5px solid #0c79df;
   padding: 1rem;
   margin-bottom: 1rem;
   background-color: rgba(179, 95, 170, 0.148);
@@ -258,6 +259,7 @@ body.dark-mode .note {
   background-color: #2d273f;
   color: #e4e0f5;
   border-color: #483d72;
+  border-left: 5px solid #250cdf;
 }
 
 body.dark-mode .note.important {
@@ -268,13 +270,13 @@ body.dark-mode .note.important {
 body.dark-mode #toolbar,
 body.dark-mode #quillEditor,
 body.dark-mode .ql-editor {
-  background-color: #2f2b42;
-  color: #f0efff;
+  background-color: #3d3c3e;
+  color: #151515;
   border-color: #6a5acd;
 }
 
 body.dark-mode .ql-editor::before {
-  color: #aaa;
+  color: #3d09e8;
 }
 
 body.dark-mode .ql-toolbar button {
@@ -307,7 +309,7 @@ body.dark-mode .ql-toolbar button {
 body.dark-mode .add-note-card {
   background-color: #37353b;
   border: 1px solid #8a0cdf;
-  color: #e9defc;
+  color: #ffffff;
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
 }
 

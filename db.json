@@ -5,7 +5,7 @@
       "title": "Group Project Kickoff",
       "body": "<p>We brainstormed ideas for our final project and agreed on a <strong>Notes App</strong>.</p>",
       "date": "2025-07-12",
-      "important": true
+      "important": false
     },
     {
       "id": "4",
@@ -48,6 +48,27 @@
       "body": "<ol><li>fix dark mode save button, once clicked it switches back to light mode instead of saving the note</li><li>undo button not functioning, delete it or fix it?</li><li>modify he title and date toolbar in dark mode -&gt; darken them a little to match the theme</li></ol>",
       "date": "2025-07-18",
       "important": true
+    },
+    {
+      "id": "6e04",
+      "title": "Final Checks",
+      "body": "<p>Check code against all project deliverables to ensure that I have implemented all the requiremnts</p>",
+      "date": "2025-07-18",
+      "important": true
+    },
+    {
+      "id": "74c6",
+      "title": "Week 4 LABs Completion",
+      "body": "<p>Make sure that by end of day sunday I have finalized on all pending LABs before the new week starts.</p>",
+      "date": "2025-07-18",
+      "important": true
+    },
+    {
+      "id": "10a7",
+      "title": "Catch up with Family",
+      "body": "<p>Call my siblings and dad tomorrow to find out how they have been this past week.</p>",
+      "date": "2025-07-18",
+      "important": false
     }
   ]
 }
