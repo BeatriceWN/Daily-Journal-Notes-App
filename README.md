@@ -1,17 +1,14 @@
-````markdown
 # Daily Journal & Notes App
 
 ## Description
 
 **Daily Journal & Notes App** is a rich-text, browser-based journaling and note-taking application that uses Quill WYSIWYG editor, a local `db.json` file for persistent storage, and a custom `server.js` with JSON Server to simulate a RESTful API. Users can create, edit, delete, search, and filter their notes, and also toggle between light and dark mode.
 
-Live App: [https://daily-journal-notes-app-4.onrender.com](https://daily-journal-notes-app-4.onrender.com)
-
 ---
 
 ## Project Overview
 
-This project enables users to keep a daily journal or take structured notes with rich formatting using Quill. The app supports all CRUD operations with a simple UI and local JSON-based backend.
+This project enables users to keep a daily journal or take structured notes with rich formatting using Quill. The app supports all CRUD operations with a simple UI and a local JSON-based backend.
 
 ### Key Features:
 
@@ -19,10 +16,10 @@ This project enables users to keep a daily journal or take structured notes with
   Integrated using Quill, users can format their notes with headings, bold text, lists, and more.
 
 - **Create & Edit Notes**  
-  Users can add new notes, edit existing ones with real-time updates.
+  Users can add new notes and edit existing ones with real-time updates.
 
 - **Delete Notes with Confirmation Modal**  
-  Deletes are confirmed using a modal popup to prevent accidental removal.
+  A confirmation modal is displayed before deleting a note to prevent accidental removals.
 
 - **Filter Notes**  
   Users can:
@@ -33,7 +30,7 @@ This project enables users to keep a daily journal or take structured notes with
   Users can switch between light and dark mode for comfortable viewing.
 
 - **LocalStorage Backup**  
-  Notes are cached to `localStorage` if the network fails, and restored automatically.
+  Notes are temporarily cached in `localStorage` during network failures and automatically restored when the connection is reestablished.
 
 - **Responsive Layout**  
   App works well across devices and adapts to various screen sizes, including mobile and tablet devices.
@@ -62,7 +59,7 @@ Then install required dependencies:
 
 ```bash
 npm install
-````
+```
 
 This installs `express` and `json-server`.
 
@@ -93,19 +90,26 @@ This will run the app using your custom `server.js`.
 
 ### 4. Open App in Browser
 
-Open [http://localhost:3000](http://localhost:3000).
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ---
 
 ## Author
 
-**Beatrice Wambui**
+**Beatrice Wambui**  
 GitHub: [@BeatriceWN](https://github.com/BeatriceWN)
 
 ---
 
-## Licence
+## License
 
-This project is licensed under the MIT License. See `LICENSE` file for details.
+This project is licensed under the MIT License. See the `LICENSE` file for details.
 
-```
+---
+
+## Live URLs
+
+- **GitHub Pages (UI & Backend):** https://beatricewn.github.io/Daily-Journal-Notes-App/
+- **Live App (Backend/API):**    https://daily-journal-notes-app-4.onrender.com
+
+---
