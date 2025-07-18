@@ -18,53 +18,47 @@ main {
    Header Layout & Controls
 ──────────────────────────── */
 
-/** The top app header bar where the title and filters live **/
 header {
-  background-color: #290245;  /* A deep purple to match the theme */
-  color: white;               /* White text for contrast on dark header */
-  padding: 1rem;              /* Add space inside the header */
+  background-color: #290245;
+  color: white;
+  padding: 1rem;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  display: flex;              /* Enable flexbox for layout */
-  flex-direction: column;     /* Stack elements vertically */
-  align-items: center;        /* Center align the items horizontally */
-  gap: 1rem;                  /* Add vertical spacing between title and controls */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
   position: sticky;
   top: 0;
-  z-index: 999; /* Keep it above other content */
+  z-index: 999;
 }
 
-/** Style the main title to always be centered **/
 header h1 {
-  width: 100%;               /* Take full width so it centers easily */
-  text-align: center;        /* Horizontally center the text */
-  margin-bottom: 1rem;       /* Add some spacing below it */
+  width: 100%;
+  text-align: center;
+  margin-bottom: 1rem;
 }
 
-/** Layout for the top control row: search, filter, dark mode toggle **/
 .header-row {
-  display: flex;             /* Flex layout */
-  justify-content: space-between; /* Push left and right sections apart */
-  align-items: center;       /* Vertically center the items */
-  flex-wrap: wrap;           /* Wrap to new line on small screens */
-  gap: 1rem;                 /* Add spacing between controls */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
 }
 
-/** Group on the left: search input + filter checkbox **/
 .header-left {
-  display: flex;             /* Inline layout for left items */
-  gap: 1rem;                 /* Space between input and checkbox */
-  align-items: right;       /* Align everything vertically */
-  flex: 1;                   /* Allow this group to grow */
+  display: flex;
+  gap: 1rem;
+  align-items: right;
+  flex: 1;
 }
 
-/** Group on the right: dark mode button floats right **/
 .header-right {
-  display: flex;             
-  justify-content: flex-end; /* Push content to the end (right) */
-  margin-left: auto;         /* Override default flex growth and force right alignment */
+  display: flex;
+  justify-content: flex-end;
+  margin-left: auto;
 }
 
-/** Optional wrapper class for controls (not always used) **/
 .header-controls {
   display: flex;
   flex-wrap: wrap;
@@ -78,42 +72,37 @@ header h1 {
    Header Inputs & Button
 ──────────────────────────── */
 
-/** Common search input style inside the header **/
 header input[type="text"],
 #searchInput {
-  padding: 0.5rem 1rem;       
-  font-size: 1rem;            
-  border: none;               /* Remove browser default border */
-  border-radius: 4px;         /* Rounded corners for soft look */
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  border: none;
+  border-radius: 4px;
 }
 
-/** Style the placeholder text inside the search bar **/
 #searchInput::placeholder {
-  font-size: 1rem;            /* Same size as typed text */
-  color: #999;                
+  font-size: 1rem;
+  color: #999;
 }
 
-/** Group label and checkbox together nicely **/
 header label {
   display: flex;
   align-items: center;
-  gap: 0.5rem;                /* Space between box and label text */
+  gap: 0.5rem;
 }
 
-/** The dark mode toggle button**/
 #darkMode {
-  padding: 0.4rem 0.6rem;    
-  font-size: 0.9rem;          
-  width: auto;                
-  white-space: nowrap;        /* Prevent text from breaking to new line */
-  cursor: pointer;            /* Show pointer on hover */
-  border: none;               /* Remove outline */
-  background-color: #391295; 
-  color: white;              
-  border-radius: 4px;         
+  padding: 0.4rem 0.6rem;
+  font-size: 0.9rem;
+  width: auto;
+  white-space: nowrap;
+  cursor: pointer;
+  border: none;
+  background-color: #391295;
+  color: white;
+  border-radius: 4px;
 }
 
-/** Shared styling for all buttons including hover effect **/
 button {
   padding: 0.5rem 1rem;
   border: none;
@@ -125,20 +114,19 @@ button {
 
 button:hover,
 #toggleDarkMode:hover {
-  background-color: #6a0bbf;  
+  background-color: #6a0bbf;
 }
 
 /* ───────────────────────────
    Notes Display Area
 ──────────────────────────── */
 
-/** Each note card displayed in the app **/
 .note {
   border: 1px solid #a658e1;
   border-radius: 6px;
   padding: 1rem;
   margin-bottom: 1rem;
-  background-color: rgba(179, 95, 170, 0.148); /* Light purple tint */
+  background-color: rgba(179, 95, 170, 0.148);
   transition:
     box-shadow 0.3s ease,
     transform 0.3s ease,
@@ -146,21 +134,18 @@ button:hover,
     border-color 0.3s ease;
 }
 
-/** Add subtle shadow when hovering over a note **/
 .note:hover {
-  box-shadow: 0 6px 12px rgba(138, 12, 223, 0.3); /* Deep purple shadow */
-  transform: translateY(-4px); /* Slight lift */
-  background-color: rgba(179, 95, 170, 0.2); /* Slightly deeper tint on hover */
-  border-color: #8a0cdf; /* Accent border on hover */
+  box-shadow: 0 6px 12px rgba(138, 12, 223, 0.3);
+  transform: translateY(-4px);
+  background-color: rgba(179, 95, 170, 0.2);
+  border-color: #8a0cdf;
 }
 
-/** Special style for important notes **/
 .note.important {
-  border-left: 5px solid #df0c48;  
-  background-color: #f5e7f09d;      
+  border-left: 5px solid #df0c48;
+  background-color: #f5e7f09d;
 }
 
-/** Small text bar at bottom of each note (date, actions) **/
 .note-footer {
   display: flex;
   justify-content: space-between;
@@ -173,7 +158,6 @@ button:hover,
    ✦ Add/Edit Note Form
 ──────────────────────────── */
 
-/** Inputs inside the note form: title and date **/
 form input[type="text"],
 form input[type="date"] {
   width: 100%;
@@ -184,14 +168,12 @@ form input[type="date"] {
   box-sizing: border-box;
 }
 
-/** The custom toolbar above the Quill editor **/
 #toolbar {
   border: 1px solid #ccc;
   border-radius: 4px 4px 0 0;
   background-color: rgb(229, 226, 226);
 }
 
-/** The main Quill editor container **/
 #quillEditor {
   border: 1px solid #ccc;
   border-top: none;
@@ -203,7 +185,6 @@ form input[type="date"] {
   box-sizing: border-box;
 }
 
-/** Group for the “mark as important” checkbox and label **/
 #importantLabel {
   display: flex;
   align-items: center;
@@ -215,7 +196,6 @@ form input[type="date"] {
   Toasts & Modal Feedback
 ──────────────────────────── */
 
-/** The main toast box used to show notifications **/
 .toast {
   position: fixed;
   bottom: 1rem;
@@ -230,50 +210,11 @@ form input[type="date"] {
   z-index: 999;
 }
 
-/** When toast is active and visible **/
 .toast.show {
   opacity: 1;
   pointer-events: auto;
 }
 
-/** Toast with undo action for deletes **/
-.undo-toast {
-  position: fixed;
-  bottom: 4rem;
-  right: 1rem;
-  background-color: #f4edfa;
-  color: #8a0cdf;
-  border: 1px solid #8a0cdf;
-  padding: 0.5rem 1rem;
-  border-radius: 6px;
-  z-index: 1001;
-  opacity: 0;
-  transform: translateY(20px);
-  transition: opacity 0.3s ease, transform 0.3s ease;
-}
-
-.undo-toast.show {
-  display: block;
-  opacity: 1;
-  transform: translateY(0);
-}
-
-/** Close button for Undo toast **/
-.undo-toast button#closeUndo {
-  background: transparent;
-  border: none;
-  color: #8a0cdf;
-  font-weight: bold;
-  font-size: 1rem;
-  margin-left: 0.5rem;
-  cursor: pointer;
-}
-
-.undo-toast button#closeUndo:hover {
-  color: #4b0175;
-}
-
-/** Fullscreen dark background when showing modals **/
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -287,7 +228,6 @@ form input[type="date"] {
   z-index: 999;
 }
 
-/** The actual modal dialog box **/
 .modal {
   background: white;
   padding: 2rem;
@@ -296,7 +236,6 @@ form input[type="date"] {
   text-align: center;
 }
 
-/** Buttons inside the modal are spaced out **/
 .modal button {
   margin: 0.5rem;
 }
@@ -306,51 +245,49 @@ form input[type="date"] {
 ──────────────────────────── */
 
 body.dark-mode {
-  background-color: #1e1b2e;         /* Deep violet-gray background */
-  color: #e2e0f5;                    /* Soft lavender text */
+  background-color: #1e1b2e;
+  color: #e2e0f5;
 }
 
 body.dark-mode header {
-  background-color: #2a2540;         /* Dark purple for header */
+  background-color: #2a2540;
   color: #ffffff;
 }
 
 body.dark-mode .note {
-  background-color: #2d273f;         /* Slightly lighter than body for contrast */
-  color: #e4e0f5;                    /* Light purple-gray text */
-  border-color: #483d72;            /* Muted purple border */
+  background-color: #2d273f;
+  color: #e4e0f5;
+  border-color: #483d72;
 }
 
 body.dark-mode .note.important {
-  background-color: #372f58;         /* Distinct purple shade for important notes */
-  border-color: #8a0cdf;             /* Brighter accent border */
+  background-color: #372f58;
+  border-color: #8a0cdf;
 }
 
 body.dark-mode #toolbar,
 body.dark-mode #quillEditor,
 body.dark-mode .ql-editor {
-  background-color: #2f2b42;         
-  color: #f0efff;                    
+  background-color: #2f2b42;
+  color: #f0efff;
   border-color: #6a5acd;
 }
 
 body.dark-mode .ql-editor::before {
-  color: #aaa;                       /* Placeholder color */
+  color: #aaa;
 }
 
 body.dark-mode .ql-toolbar button {
-  filter: invert(0.9);               /* Slight icon inversion */
+  filter: invert(0.9);
 }
-
-body.dark-mode .undo-toast
 
 /* ───────────────────────────
    Add Note Card Styling
 ──────────────────────────── */
 
 .add-note-card {
-  background-color: #faf5ff;              
-  border: 2px solid #8a0cdf !important;               
+  background-color: #faf5ff;
+  border: 2px solid #8a0cdf !important;
   border-radius: 12px !important;
   padding: 1.5rem;
   margin-top: 2rem;
@@ -359,7 +296,6 @@ body.dark-mode .undo-toast
   transition: background-color 0.3s ease, box-shadow 0.3s ease, border 0.3s ease;
 }
 
-/* Optional visual enhancement when hovering */
 .add-note-card:hover {
   box-shadow: 0 8px 20px rgba(138, 12, 223, 0.25);
 }
@@ -369,10 +305,10 @@ body.dark-mode .undo-toast
 }
 
 body.dark-mode .add-note-card {
-  background-color: #37353b;         
-  border: 1px solid #8a0cdf;         
-  color: #e9defc;                    
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); 
+  background-color: #37353b;
+  border: 1px solid #8a0cdf;
+  color: #e9defc;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
 }
 
 /* ───────────────────────────
