@@ -257,7 +257,16 @@ form input[type="date"] {
   border: 1px solid #8a0cdf;
   padding: 0.5rem 1rem;
   border-radius: 6px;
-  z-index: 1012;
+  z-index: 1001;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.undo-toast.show {
+  display: block;
+  opacity: 1;
+  transform: translateY(0);
 }
 
 /** Close button for Undo toast **/

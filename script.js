@@ -187,67 +187,75 @@ window.deleteNote = function (id) {
   const note = allNotes.find(n => n.id === id || n.id.toString() === id.toString());
   recentlyDeletedNote = note;
 
-  const confirmAndDelete = async () => {
-    try {
-      await fetch(`${API_BASE}/notes/${id}`, { method: 'DELETE' });
-      showToast('Note deleted');
+  const showUndoToast = () => {
+    const undoToast = document.createElement('div');
+    undoToast.className = 'undo-toast show';
+    undoToast.innerHTML = `
+      <span>Note deleted</span>
+      <button id="undoBtn">Undo</button>
+      <button id="closeUndo">✖</button>
+    `;
+    document.body.appendChild(undoToast);
+
+    // Undo click
+    document.getElementById('undoBtn').onclick = async () => {
+      clearTimeout(deleteTimer); // Cancel scheduled delete
+      try {
+        await fetch(`${API_BASE}/notes`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(recentlyDeletedNote)
+        });
+        showToast('Undo successful');
+      } catch {
+        recentlyDeletedNote.id = crypto.randomUUID();
+        allNotes.push(recentlyDeletedNote);
+        saveToLocal(allNotes);
+        renderNotes();
+        showToast('Undo offline');
+      }
+      cleanupToast();
       fetchNotes();
+    };
+
+    // Close (✖) click
+    document.getElementById('closeUndo').onclick = () => {
+      cleanupToast();
+    };
+
+    // Auto-hide after 6s
+    deleteTimer = setTimeout(async () => {
+      await performPermanentDelete(id);
+      cleanupToast();
+    }, 6000);
+  };
+
+  const cleanupToast = () => {
+    const existing = document.querySelector('.undo-toast');
+    if (existing) document.body.removeChild(existing);
+    recentlyDeletedNote = null;
+  };
+
+  const performPermanentDelete = async (noteId) => {
+    try {
+      await fetch(`${API_BASE}/notes/${noteId}`, { method: 'DELETE' });
+      showToast('Note permanently deleted');
     } catch {
-      allNotes = allNotes.filter(n => n.id !== id);
+      allNotes = allNotes.filter(n => n.id !== noteId);
       saveToLocal(allNotes);
       renderNotes();
       showToast('Deleted offline');
     }
+    fetchNotes();
   };
-    // Create Undo toast
-const undoToast = document.createElement('div');
-undoToast.className = 'undo-toast';
-undoToast.innerHTML = `
-  <span>Note deleted</span>
-  <button id="undoBtn">Undo</button>
-  <button id="closeUndo">✖</button>
-`;
-document.body.appendChild(undoToast);
 
-// Handle Undo click
-document.getElementById('undoBtn').onclick = async () => {
-  if (!recentlyDeletedNote) return;
-  try {
-    await fetch(`${API_BASE}/notes`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(recentlyDeletedNote)
-    });
-    showToast('Undo successful');
-  } catch {
-    recentlyDeletedNote.id = crypto.randomUUID();
-    allNotes.push(recentlyDeletedNote);
-    saveToLocal(allNotes);
-    renderNotes();
-    showToast('Undo offline');
-  }
-  document.body.removeChild(undoToast);
-  recentlyDeletedNote = null;
-  fetchNotes();
-};
+  // Step 1: Remove from UI immediately
+  allNotes = allNotes.filter(n => n.id !== id);
+  saveToLocal(allNotes);
+  renderNotes();
 
-// Manual close handler
-document.getElementById('closeUndo').onclick = () => {
-  if (document.body.contains(undoToast)) {
-    document.body.removeChild(undoToast);
-  }
-  recentlyDeletedNote = null;
-};
-
-// Auto-dismiss after 6 seconds
-setTimeout(() => {
-  if (document.body.contains(undoToast)) {
-    document.body.removeChild(undoToast);
-  }
-  recentlyDeletedNote = null;
-}, 6000);
-
-  showModal('Delete this note?', confirmAndDelete);
+  // Step 2: Ask for confirmation
+  showModal('Delete this note?', showUndoToast);
 };
 
 // ===== FILTER EVENTS =====
