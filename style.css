@@ -1,31 +1,16 @@
-/* ───────────────────────────
-   Base Layout and Global
-──────────────────────────── */
-
-/** This sets the font for the entire page to Arial, a clean sans-serif font. **/
 body {
   font-family: Arial, sans-serif;
-
-  /** The default light background for the app **/
-  background-color: #e0c7f189;
-
-  /** Remove all default browser margin around the body **/
-  margin: 0;
-
-  /** Remove default padding too, so we fully control spacing **/
-  padding: 0;
-
-  /** Set the default text color to dark gray for readability **/
-  color: #333;
-
-  /** Add a smooth transition for background and text color when toggling dark mode **/
-  transition: background-color 0.3s ease, color 0.3s ease;
+  background-color: #e0c7f189; /** default light background for the app **/
+  margin: 0; /** remove all default browser margin around the body **/
+  padding: 0; /** Remove default padding too, so we fully control spacing **/
+  color: #333; /** Set the default text color to dark gray for readability **/
+  transition: background-color 0.3s ease, color 0.3s ease;  /** Add a smooth transition for background and text color when toggling dark mode **/
 }
 
 /** This section limits the width of content and centers it on the page **/
 main {
   padding: 1rem;             /* Add spacing around the main content */
-  max-width: 800px;          /* Limit width to make content easier to read */
+  max-width: 960px;          /* Limit width to make content easier to read */
   margin: auto;              /* Center the main block horizontally */
 }
 
@@ -38,10 +23,14 @@ header {
   background-color: #290245;  /* A deep purple to match the theme */
   color: white;               /* White text for contrast on dark header */
   padding: 1rem;              /* Add space inside the header */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   display: flex;              /* Enable flexbox for layout */
   flex-direction: column;     /* Stack elements vertically */
   align-items: center;        /* Center align the items horizontally */
   gap: 1rem;                  /* Add vertical spacing between title and controls */
+  position: sticky;
+  top: 0;
+  z-index: 999; /* Keep it above other content */
 }
 
 /** Style the main title to always be centered **/
@@ -313,55 +302,77 @@ form input[type="date"] {
 }
 
 /* ───────────────────────────
-   Dark Mode Overrides
+   Dark Mode Styling
 ──────────────────────────── */
 
 body.dark-mode {
-  background-color: #3b3a3a;
-  color: #e0e0e0;
+  background-color: #1e1b2e;         /* Deep violet-gray background */
+  color: #e2e0f5;                    /* Soft lavender text */
 }
 
 body.dark-mode header {
-  background-color: #212121;
+  background-color: #2a2540;         /* Dark purple for header */
+  color: #ffffff;
 }
 
 body.dark-mode .note {
-  background-color: #22303C;
-  color: #ddd;
-  border-color: #3d415a;
+  background-color: #2d273f;         /* Slightly lighter than body for contrast */
+  color: #e4e0f5;                    /* Light purple-gray text */
+  border-color: #483d72;            /* Muted purple border */
 }
 
 body.dark-mode .note.important {
-  background-color: #272c3d;
+  background-color: #372f58;         /* Distinct purple shade for important notes */
+  border-color: #8a0cdf;             /* Brighter accent border */
 }
 
 body.dark-mode #toolbar,
 body.dark-mode #quillEditor,
 body.dark-mode .ql-editor {
-  background-color: #646479;
-  color: white;
+  background-color: #2f2b42;         
+  color: #f0efff;                    
+  border-color: #6a5acd;
 }
 
 body.dark-mode .ql-editor::before {
-  color: #999;
+  color: #aaa;                       /* Placeholder color */
 }
 
 body.dark-mode .ql-toolbar button {
-  filter: invert(1);           /* Make toolbar icons visible on dark background */
+  filter: invert(0.9);               /* Slight icon inversion */
 }
+
+body.dark-mode .undo-toast
 
 /* ───────────────────────────
    Add Note Card Styling
 ──────────────────────────── */
 
 .add-note-card {
-  background-color: #f3e7fb;
-  border: 1px solid #290655;
-  border-radius: 12px;
+  background-color: #faf5ff;              
+  border: 2px solid #8a0cdf !important;               
+  border-radius: 12px !important;
   padding: 1.5rem;
   margin-top: 2rem;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  color: #290245;
+  box-shadow: 0 6px 16px rgba(138, 12, 223, 0.15);
+  transition: background-color 0.3s ease, box-shadow 0.3s ease, border 0.3s ease;
+}
+
+/* Optional visual enhancement when hovering */
+.add-note-card:hover {
+  box-shadow: 0 8px 20px rgba(138, 12, 223, 0.25);
+}
+
+.add-note-card form {
+  width: 100%;
+}
+
+body.dark-mode .add-note-card {
+  background-color: #37353b;         
+  border: 1px solid #8a0cdf;         
+  color: #e9defc;                    
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); 
 }
 
 /* ───────────────────────────
