@@ -8,38 +8,41 @@
     <!-- app main external css -->
     <link rel="stylesheet" href="style.css" />
 
-    <!-- quill css and js (local) -->
+    <!-- Quill WYSIWYG editor -->
     <link rel="stylesheet" href="libs/quill.snow.css" />
     <script src="libs/quill.min.js" defer></script>
 
-    <!-- main script -->
+    <!-- Your custom JavaScript -->
     <script src="script.js" defer></script>
   </head>
 
   <body>
     <!-- header section -->
     <header>
-  <h1>Daily Journal & Notes</h1>
+      <h1>Daily Journal & Notes</h1>
 
-  <!-- header top row: left-aligned search and filter, right-aligned toggle -->
-  <div class="header-row">
-    
-    <!-- left side -->
-    <div class="header-left">
-      <input type="text" id="searchInput" placeholder="search notes..." />
-      <label>
-        <input type="checkbox" id="importantOnly" />
-        important only
-      </label>
-    </div>
+      <!-- header top row: left-aligned search and filter, right-aligned toggle -->
+      <div class="header-row">
+        <!-- left side -->
+        <div class="header-left">
+          <input
+            type="text"
+            id="searchInput"
+            placeholder="search notes..."
+            aria-label="Search Notes"
+          />
+          <label>
+            <input type="checkbox" id="importantOnly" />
+            important only
+          </label>
+        </div>
 
-    <!-- right side -->
-    <div class="header-right">
-      <button id="toggleDarkMode">Dark Mode</button>
-    </div>
-
-  </div>
-</header>
+        <!-- right side -->
+        <div class="header-right">
+          <button id="toggleDarkMode">Dark Mode</button>
+        </div>
+      </div>
+    </header>
 
     <main>
       <!-- where notes will render -->
@@ -58,11 +61,12 @@
               id="noteTitle"
               placeholder="title"
               required
+              aria-label="Note Title"
             /><br />
 
             <!-- quill custom toolbar -->
             <div id="toolbar">
-              <select class="ql-header">
+              <select class="ql-header" aria-label="Header level">
                 <option selected></option>
                 <option value="1">heading 1</option>
                 <option value="2">heading 2</option>
@@ -79,10 +83,14 @@
             </div>
 
             <!-- quill editor -->
-            <div id="quillEditor"></div><br />
+            <div id="quillEditor" aria-label="Note Content"></div><br />
 
             <!-- date input -->
-            <input type="date" id="noteDate" /><br />
+            <input
+              type="date"
+              id="noteDate"
+              aria-label="Note Date"
+            /><br />
 
             <!-- important flag -->
             <div id="importantLabel">
@@ -92,11 +100,6 @@
 
             <!-- submit note -->
             <button type="submit">Save Note</button>
-
-            <div class="undo-toast" id="undoToast" style="display: none;"> Note deleted. 
-                <button id="undoBtn">Undo</button>
-            </div>
-
           </form>
         </div>
       </section>

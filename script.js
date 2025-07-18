@@ -12,7 +12,6 @@ const toggleDarkMode = document.getElementById('toggleDarkMode');       // Butto
 const API_BASE = "http://localhost:3000";                               // Local JSON-server endpoint
 let allNotes = [];                                                      // Array to hold notes from API or localStorage
 noteForm.dataset.editingId = '';                                        // Tracks which note is currently being edited
-let recentlyDeletedNote = null;                                         // Stores recently deleted note for Undo
 
 // ===== INITIALIZE QUILL EDITOR =====
 const quill = new Quill('#quillEditor', {
@@ -21,7 +20,6 @@ const quill = new Quill('#quillEditor', {
 });
 
 // ===== TOAST MESSAGE UTILITY =====
-// Creates a floating notification message
 function showToast(message) {
   const toast = document.createElement('div');
   toast.className = 'toast show';
@@ -41,7 +39,6 @@ function showToast(message) {
 }
 
 // ===== MODAL CONFIRMATION UTILITY =====
-// Displays a modal to confirm destructive actions like delete
 function showModal(message, onConfirm) {
   const overlay = document.createElement('div');
   overlay.className = 'modal-overlay';
@@ -155,7 +152,6 @@ noteForm.addEventListener('submit', async (e) => {
     noteForm.dataset.editingId = '';
     fetchNotes();
   } catch {
-    // Offline fallback
     showToast(isEdit ? 'Update failed. Saved offline.' : 'Save failed. Using offline storage.');
     if (isEdit) {
       allNotes = allNotes.map(n => n.id.toString() === editingId ? { ...n, ...note } : n);
@@ -182,80 +178,22 @@ window.editNote = function (id) {
   noteForm.dataset.editingId = note.id;
 };
 
-// ===== DELETE NOTE WITH UNDO SUPPORT =====
+// ===== DELETE NOTE (NO UNDO) =====
 window.deleteNote = function (id) {
-  const note = allNotes.find(n => n.id === id || n.id.toString() === id.toString());
-  recentlyDeletedNote = note;
+  showModal('Delete this note?', async () => {
+    allNotes = allNotes.filter(n => n.id !== id);
+    saveToLocal(allNotes);
+    renderNotes();
 
-  const showUndoToast = () => {
-    const undoToast = document.createElement('div');
-    undoToast.className = 'undo-toast show';
-    undoToast.innerHTML = `
-      <span>Note deleted</span>
-      <button id="undoBtn">Undo</button>
-      <button id="closeUndo">✖</button>
-    `;
-    document.body.appendChild(undoToast);
-
-    // Undo click
-    document.getElementById('undoBtn').onclick = async () => {
-      clearTimeout(deleteTimer); // Cancel scheduled delete
-      try {
-        await fetch(`${API_BASE}/notes`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(recentlyDeletedNote)
-        });
-        showToast('Undo successful');
-      } catch {
-        recentlyDeletedNote.id = crypto.randomUUID();
-        allNotes.push(recentlyDeletedNote);
-        saveToLocal(allNotes);
-        renderNotes();
-        showToast('Undo offline');
-      }
-      cleanupToast();
-      fetchNotes();
-    };
-
-    // Close (✖) click
-    document.getElementById('closeUndo').onclick = () => {
-      cleanupToast();
-    };
-
-    // Auto-hide after 6s
-    deleteTimer = setTimeout(async () => {
-      await performPermanentDelete(id);
-      cleanupToast();
-    }, 6000);
-  };
-
-  const cleanupToast = () => {
-    const existing = document.querySelector('.undo-toast');
-    if (existing) document.body.removeChild(existing);
-    recentlyDeletedNote = null;
-  };
-
-  const performPermanentDelete = async (noteId) => {
     try {
-      await fetch(`${API_BASE}/notes/${noteId}`, { method: 'DELETE' });
-      showToast('Note permanently deleted');
+      await fetch(`${API_BASE}/notes/${id}`, { method: 'DELETE' });
+      showToast('Note deleted');
     } catch {
-      allNotes = allNotes.filter(n => n.id !== noteId);
-      saveToLocal(allNotes);
-      renderNotes();
       showToast('Deleted offline');
     }
+
     fetchNotes();
-  };
-
-  // Step 1: Remove from UI immediately
-  allNotes = allNotes.filter(n => n.id !== id);
-  saveToLocal(allNotes);
-  renderNotes();
-
-  // Step 2: Ask for confirmation
-  showModal('Delete this note?', showUndoToast);
+  });
 };
 
 // ===== FILTER EVENTS =====
@@ -263,10 +201,30 @@ searchInput.addEventListener('input', renderNotes);
 importantOnly.addEventListener('change', renderNotes);
 
 // ===== DARK MODE TOGGLE =====
+// ===== DARK MODE STATE (persistent with localStorage) =====
+
+// Save state to localStorage
+function setDarkModeState(isDark) {
+  localStorage.setItem('darkMode', isDark ? 'enabled' : 'disabled');
+}
+
+// Load saved state from localStorage
+function loadDarkMode() {
+  const mode = localStorage.getItem('darkMode');
+  const isDark = mode === 'enabled';
+  document.body.classList.toggle('dark-mode', isDark);
+  toggleDarkMode.textContent = isDark ? 'Light Mode' : 'Dark Mode';
+}
+
+// Toggle dark mode and update localStorage
 toggleDarkMode.addEventListener('click', () => {
   const isDark = document.body.classList.toggle('dark-mode');
   toggleDarkMode.textContent = isDark ? 'Light Mode' : 'Dark Mode';
+  setDarkModeState(isDark);
 });
+
+// Load dark mode state immediately on page load
+loadDarkMode();
 
 // ===== INITIAL LOAD =====
 fetchNotes().then(renderNotes);

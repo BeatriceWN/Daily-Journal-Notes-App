@@ -33,6 +33,20 @@
       "title": "Meeting with Mentor",
       "body": "<p>Great advice on balancing coding with soft skills. Need to start reading more leadership books.</p>",
       "date": "2025-07-15",
+      "important": false
+    },
+    {
+      "id": "513c",
+      "title": "Go to Martin's school",
+      "body": "<p>Parent's Meeting in Ruaraka Academy</p>",
+      "date": "2025-07-18",
+      "important": true
+    },
+    {
+      "id": "3917",
+      "title": "Debug Code",
+      "body": "<ol><li>fix dark mode save button, once clicked it switches back to light mode instead of saving the note</li><li>undo button not functioning, delete it or fix it?</li><li>modify he title and date toolbar in dark mode -&gt; darken them a little to match the theme</li></ol>",
+      "date": "2025-07-18",
       "important": true
     }
   ]
