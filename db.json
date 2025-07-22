@@ -3,7 +3,7 @@
     {
       "id": "3",
       "title": "Group Project Kickoff",
-      "body": "<p>We brainstormed ideas for our final project and agreed on a <strong>Notes App</strong>.</p>",
+      "body": "<p>We brainstormed ideas for our final project and agreed on a BookLiker APP.</p>",
       "date": "2025-07-12",
       "important": false
     },
@@ -24,21 +24,21 @@
     {
       "id": "7",
       "title": "Coding Practice Log",
-      "body": "<p>Solved 3 LeetCode problems:<br>1. Two Sum<br>2. Valid Parentheses<br>3. Merge Intervals</p>",
+      "body": "<p>Solved 3 code problems:1. Two Sum2. Valid Parentheses3. Merge Intervals</p>",
       "date": "2025-07-14",
-      "important": true
+      "important": false
     },
     {
       "id": "8",
       "title": "Meeting with Mentor",
-      "body": "<p>Great advice on balancing coding with soft skills. Need to start reading more leadership books.</p>",
+      "body": "<p><strong><span class=\"ql-cursor\">﻿</span></strong>Great advice on balancing coding with soft skills. Need to start reading more leadership books.</p>",
       "date": "2025-07-15",
       "important": false
     },
     {
       "id": "513c",
       "title": "Go to Martin's school",
-      "body": "<p>Parent's Meeting in Ruaraka Academy</p>",
+      "body": "<p>Parent's Teacher Meeting and Clinic day on Saturday </p>",
       "date": "2025-07-18",
       "important": true
     },
@@ -66,7 +66,7 @@
     {
       "id": "10a7",
       "title": "Catch up with Family",
-      "body": "<p>Call my siblings and dad tomorrow to find out how they have been this past week.</p>",
+      "body": "<p><em>Call my siblings and dad tomorrow to find out how they have been this past week.</em></p>",
       "date": "2025-07-18",
       "important": false
     }

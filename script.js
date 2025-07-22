@@ -9,7 +9,7 @@ const noteImportant = document.getElementById('noteImportant');         // Check
 const toggleDarkMode = document.getElementById('toggleDarkMode');       // Button to toggle dark mode
 
 // ===== STATE VARIABLES =====
-const API_BASE = "http://localhost:3000";                               // Local JSON-server endpoint
+const API_BASE = "https://daily-journal-and-notes-app.onrender.com";                               // Local JSON-server endpoint
 let allNotes = [];                                                      // Array to hold notes from API or localStorage
 noteForm.dataset.editingId = '';                                        // Tracks which note is currently being edited
 
@@ -150,7 +150,7 @@ noteForm.addEventListener('submit', async (e) => {
     noteForm.reset();
     quill.root.innerHTML = '';
     noteForm.dataset.editingId = '';
-    fetchNotes();
+    fetchNotes().then(loadDarkMode);
   } catch {
     showToast(isEdit ? 'Update failed. Saved offline.' : 'Save failed. Using offline storage.');
     if (isEdit) {
@@ -178,7 +178,7 @@ window.editNote = function (id) {
   noteForm.dataset.editingId = note.id;
 };
 
-// ===== DELETE NOTE (NO UNDO) =====
+// ===== DELETE NOTE =====
 window.deleteNote = function (id) {
   showModal('Delete this note?', async () => {
     allNotes = allNotes.filter(n => n.id !== id);
@@ -201,8 +201,6 @@ searchInput.addEventListener('input', renderNotes);
 importantOnly.addEventListener('change', renderNotes);
 
 // ===== DARK MODE TOGGLE =====
-// ===== DARK MODE STATE (persistent with localStorage) =====
-
 // Save state to localStorage
 function setDarkModeState(isDark) {
   localStorage.setItem('darkMode', isDark ? 'enabled' : 'disabled');
@@ -227,4 +225,7 @@ toggleDarkMode.addEventListener('click', () => {
 loadDarkMode();
 
 // ===== INITIAL LOAD =====
-fetchNotes().then(renderNotes);
+fetchNotes().then(() => {
+  renderNotes();
+  loadDarkMode(); // Reapply saved dark mode
+});
